@@ -11,38 +11,54 @@ And(/^User masuk ke menu sign\-in$/) do
   puts "Anda masuk menu #{judul}"
 end
 
-And(/^User memasukkan "([^"]*)" dan membuat akun baru$/) do |email|
-  fld = @driver.find_element(id:'email_create')
+And(/^User memasukkan "([^"]*)" dan membuat akun baru$/) do |arg|
+  fld = @driver.find_element(xpath:'//*[@id="email_create"]')
   puts "Email dimasukkan" do
-  fld.send_keys email if @wait.until{fld.displayed?}
+    until fld.displayed?
+      fld.send_keys arg
+    end
+    fld.get_attribute(email) != ""
   end
 end
 
 Then(/^User akan masuk kedalam menu registrasi$/) do
-  btn = @driver.find_element(id:'SubmitCreate')
+  btn = @driver.find_element(id:"SubmitCreate")
   jdl = @driver.title
-  btn.click
-  puts "Anda masuk ke #{jdl}" if @wait.until{jdl.displayed?}
+  puts "Anda masuk ke #{jdl}" do
+    btn.click
+  end
 end
 
 And(/^User mengisi semua mandatoy field$/) do
-  radio = @driver.find_element(id:'uniform-id_gender1')
-  name1 = @driver.find_element(id:'customer_firstname')
-  name2 = @driver.find_element(id:'customer_lastname')
-  pssw = @driver.find_element(id:'passwd')
-  lhr1 = @driver.find_element(id:'days')
-  lhr2 = @driver.find_element(id:'months')
-  lhr3 = @driver.find_element(id:'years')
-  addss = @driver.find_element(id:'address1')
+  radio = @driver.find_element(id:"uniform-id_gender1")
+  name1 = @driver.find_element(id:"customer_firstname")
+  name2 = @driver.find_element(id:"customer_lastname")
+  pssw = @driver.find_element(id:"passwd")
+  lhr1 = @driver.find_element(id:"days")
+  lhr2 = @driver.find_element(id:"months")
+  lhr3 = @driver.find_element(id:"years")
+  addss = @driver.find_element(id:"address1")
   puts "Mr terpilih" do
     radio.click if @wait.until{radio.displayed?}
   end
   puts "Nama dimasukkan" do
-    name1.send_keys fname if @wait.until{name1.displayed?}
-    name2.send_keys lname if @wait.until{name2.displayed?}
+    name1.send_keys 'fname' if @wait.until{name1.displayed?}
+    name2.send_keys 'lname' if @wait.until{name2.displayed?}
   end
   puts "Password dimasukkan" do
-    pssw.send_keys passw if @wait.until{pssw.displayed?}
+    pssw.send_keys 'passw' if @wait.until{pssw.displayed?}
+  end
+  puts "Tanggal lahir dipilih" do
+    lhr1.send_keys '13' if @wait.until{lhr1.displayed?}
+  end
+  puts "Bulan lahir dipilih" do
+    lhr2.send_keys 'november' if @wait.until{lhr2.displayed?}
+  end
+  puts "Tahun Lahir dipilih" do
+    lhr3.send_keys '1990' if @wait.until{lhr3.displayed?}
+  end
+  puts "Alamat dimasukkan" do
+    addss.send_keys 'Jalan Kebajikan No. 14' if @wait.until{addss.displayed?}
   end
 end
 
@@ -53,3 +69,4 @@ end
 Then(/^Registrasi berhasil dilakukan$/) do
   pending
 end
+

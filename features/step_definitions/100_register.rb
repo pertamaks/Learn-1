@@ -4,20 +4,21 @@ Given(/^User pergi ke situs$/) do
   puts "Anda membuka #{judul}" if judul == 'My Store'
 end
 
-And(/^User masuk ke menu sign\-in$/) do
+When(/^User masuk ke menu sign\-in$/) do
   btn = @driver.find_element(xpath:'//*[@class="login"]')
   judul = @driver.title
   btn.click if @wait.until{btn.displayed?}
   puts "Anda masuk menu #{judul}"
 end
 
-And(/^User memasukkan "([^"]*)" dan membuat akun baru$/) do |arg|
-  fld = @driver.find_element(xpath:'//*[@id="email_create"]')
+When(/^User memasukkan email dan membuat akun baru$/) do
+  fld = @driver.find_element(xpath:'//input[@id="email_create"]')
   puts "Email dimasukkan" do
-    until fld.displayed?
-      fld.send_keys arg
-    end
-    fld.get_attribute(email) != ""
+    sleep(3)
+    @wait.until {fld.displayed?}
+      fld.click
+      fld.send_keys 'jajal1@email.com'
+    fld.get_attribute(xpath:'//input[@id="email_create"]') != ""
   end
 end
 
@@ -29,7 +30,7 @@ Then(/^User akan masuk kedalam menu registrasi$/) do
   end
 end
 
-And(/^User mengisi semua mandatoy field$/) do
+When(/^User mengisi semua mandatoy field$/) do
   radio = @driver.find_element(id:"uniform-id_gender1")
   name1 = @driver.find_element(id:"customer_firstname")
   name2 = @driver.find_element(id:"customer_lastname")
@@ -62,11 +63,10 @@ And(/^User mengisi semua mandatoy field$/) do
   end
 end
 
-And(/^User klik tombol registrasi$/) do
+When(/^User klik tombol registrasi$/) do
   pending
 end
 
 Then(/^Registrasi berhasil dilakukan$/) do
   pending
 end
-
